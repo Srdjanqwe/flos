@@ -25,6 +25,14 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        Gate::define('home.contact', function ($user) {
+            return $user->is_admin;
+        });
+
+        Gate::before(function ($user, $ability) {
+            if($user -> is_admin && in_array($ability, ['delete'])) {
+                return true;
+            }
+        });
     }
 }

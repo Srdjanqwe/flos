@@ -1,6 +1,9 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PostsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +16,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [HomeController::class,'home'])->name('home');
+Route::get('/contact', [HomeController::class, 'contact'])->name('contact')->middleware('can:home.contact');
+// Route::get('/secret', [HomeController::class, 'secret'])->name('secret')->middleware('can:home.secret');
+
+// Route::resource('/posts', [PostsController::class])->middleware('auth');
+Route::resource('/posts', 'PostsController');
+Auth:: routes();
